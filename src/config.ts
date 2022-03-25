@@ -7,6 +7,7 @@ export interface User {
   name: string;
   email: string;
   privateKey: string;
+  gpgKey: string;
 }
 
 export type Config = User[];

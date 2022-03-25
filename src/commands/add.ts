@@ -37,6 +37,12 @@ export async function handler(argv: {}) {
         .filter((f) => !/^(config|known_hosts|.+\.pub)$/.test(f))
         .map((f) => ({title: f, value: path.join(sshDir, f)})),
     },
+    {
+      type: 'select' as const,
+      name: 'gpgKey',
+      message: 'gpg signing key',
+      validate: (value: string) => value.length > 0
+    },
   ];
 
   const result = await prompt(questions);

@@ -17,6 +17,7 @@ export interface GitConfigParams {
   'user.name': string;
   'user.email': string;
   'core.sshCommand': string;
+  'user.signingKey': string;
   [index: string]: string;
 }
 
@@ -31,6 +32,7 @@ export interface GitConfig {
   user: {
     name: string;
     email: string;
+    signingKey: string;
   };
 }
 
@@ -56,6 +58,7 @@ export async function switchAccount(user: User): Promise<GitConfigParams> {
     ...Object.fromEntries(
       remotes.map((key) => [`remote.${key}.gtPrivateKeyPath`, user.privateKey]),
     ),
+    'user.signingKey': user.gpgKey
   };
   try {
     setLocalConfig(entries);
@@ -94,6 +97,7 @@ export async function getCurrentUser(): Promise<User> {
       name: config.user.name,
       email: config.user.email,
       privateKey: config[`remote "origin"`]!.gtPrivateKeyPath!,
+      gpgKey: config.user.signingKey
     };
     return user;
   } catch (err) {
